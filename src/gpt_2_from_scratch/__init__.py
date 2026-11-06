@@ -20,20 +20,20 @@ def main() -> None:
         future: Future[GPT] = executor.submit(lambda: GPT(GPTConfig()))
 
         while not future.done():
-            print('Model is loading...')
+            print("Model is loading...")
             sleep(1)
 
         # Retrieve the model
         model: GPT = future.result()
 
-    print('Loaded successfully')
+    print("Loaded successfully")
 
     model.eval()
     device: str = get_device()
     model.to(device)
 
     # prefix tokens
-    enc: tiktoken.Encoding = tiktoken.get_encoding('gpt2')
+    enc: tiktoken.Encoding = tiktoken.get_encoding("gpt2")
     tokens: torch.Tensor = torch.tensor(
         enc.encode("Hello, I'm a language model,"), dtype=torch.long
     )  # (8,)
@@ -78,8 +78,8 @@ def main() -> None:
     for i in range(num_return_sequences):
         token_ids: list[int] = x[i, :max_length].tolist()
         decoded: str = enc.decode(token_ids)
-        print('>', decoded)
+        print(">", decoded)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
